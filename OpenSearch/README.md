@@ -40,23 +40,23 @@ In another terminal run, the default username and password is admin - this of co
 Should all be correct you will get a response that shows:
 
 
->    {
->    "name" : "opensearch-cluster-master-0",
->    "cluster_name" : "opensearch-cluster",
->    "cluster_uuid" : "EmhtKET_SLGrMEi8cSYdPw",
->    "version" : {
->        "distribution" : "opensearch",
->        "number" : "2.8.0",
->        "build_type" : "tar",
->        "build_hash" : "db90a415ff2fd428b4f7b3f800a51dc229287cb4",
->        "build_date" : "2023-06-03T06:24:25.112415503Z",
->        "build_snapshot" : false,
->        "lucene_version" : "9.6.0",
->        "minimum_wire_compatibility_version" : "7.10.0",
->        "minimum_index_compatibility_version" : "7.0.0"
->    },
->    "tagline" : "The OpenSearch Project: https://opensearch.org/"
->    }
+>    {  
+>    "name" : "opensearch-cluster-master-0",  
+>    "cluster_name" : "opensearch-cluster",  
+>    "cluster_uuid" : "EmhtKET_SLGrMEi8cSYdPw",  
+>    "version" : {  
+>        "distribution" : "opensearch",  
+>        "number" : "2.8.0",  
+>        "build_type" : "tar",  
+>        "build_hash" : "db90a415ff2fd428b4f7b3f800a51dc229287cb4",  
+>        "build_date" : "2023-06-03T06:24:25.112415503Z",  
+>        "build_snapshot" : false,  
+>        "lucene_version" : "9.6.0",  
+>        "minimum_wire_compatibility_version" : "7.10.0",  
+>        "minimum_index_compatibility_version" : "7.0.0"  
+>    },  
+>    "tagline" : "The OpenSearch Project: https://opensearch.org/"  
+>    }  
 
 #### Create index in OpenSearch
 
@@ -73,9 +73,9 @@ You will need at least this in the config section of the daemon values
 
 
 
->  hermes:
->    services_list: "elastic"
->    elastic_endpoint: https://opensearch-cluster-worker.opensearch-system.svc.cluster.local:9200/<your chosen index>/_bulk"
+>  hermes:  
+>    services_list: "elastic"  
+>    elastic_endpoint: https://opensearch-cluster-worker.opensearch-system.svc.cluster.local:9200/<your chosen index>/_bulk"  
 
 You will also need to create a secret in the Rucio namespace to allow the injection of the OpenSearch user secret for Hermes to be able to deposit the messages 
 
@@ -85,33 +85,27 @@ You will also need to create a secret in the Rucio namespace to allow the inject
 
 Add the secret to Hermes, an example is below
 
->hermes:
->  threads: 1
-v  podAnnotations: {}
->  bulk: 1000
->  resources:
->    limits:
->      memory: "600Mi"
->      cpu: "210m"
->    requests:
->      memory: "300Mi"
->      cpu: "140m"
->  additionalEnvs:
->  - name: RUCIO_CFG_DATABASE_DEFAULT
->    valueFrom:
->      secretKeyRef:
->        name: rucio-database04
->        key: DEFAULT
->  - name: RUCIO_CFG_HERMES_ELASTIC_USERNAME
->    valueFrom:
->      secretKeyRef:
->        name: open-secrets
->        key: USERNAME
->  - name: RUCIO_CFG_HERMES_ELASTIC_PASSWORD
->    valueFrom:
->      secretKeyRef:
->        name: open-secrets
->        key: PASSWORD
+>hermes:  
+>  threads: 1  
+>  podAnnotations: {}  
+>  bulk: 1000  
+>  resources:  
+>    limits:  
+>      memory: "600Mi"  
+>      cpu: "210m"  
+>    requests:  
+>      memory: "300Mi"  
+>      cpu: "140m"  
+>  - name: RUCIO_CFG_HERMES_ELASTIC_USERNAME  
+>    valueFrom:  
+>      secretKeyRef:  
+>        name: open-secrets  
+>        key: USERNAME  
+>  - name: RUCIO_CFG_HERMES_ELASTIC_PASSWORD  
+>    valueFrom:  
+>      secretKeyRef:  
+>        name: open-secrets  
+>        key: PASSWORD  
 
 
 ## 4. Register OpenSearch as a datasource in Grafana
@@ -130,14 +124,14 @@ In your clusters Grafana deployment go to
 
 - Put in the following details in the fields: 
 
->URL: http://OpenSearch-eck-OpenSearch-es-worker.elastic-system.svc.cluster.local:9200
->Basic auth: True
->User: <USERNAME>
->Password: <OpenSearch password>
->Index name: <your Index>
->Pattern: No pattern
->Time field name: create_at
->Max concurrent Shard Requests: 3 # If you have used the base repo settings
+>URL: http://OpenSearch-eck-OpenSearch-es-worker.elastic-system.svc.cluster.local:9200  
+>Basic auth: True  
+>User: <USERNAME>  
+>Password: <OpenSearch password>  
+>Index name: <your Index>  
+>Pattern: No pattern  
+>Time field name: create_at  
+>Max concurrent Shard Requests: 3 # If you have used the base repo settings  
 
 
 ## 5. Deploy dashboards to Grafana to visualise the data

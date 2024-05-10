@@ -44,23 +44,23 @@ Should all be correct you will get a response that shows:
 
 
 
->{
->  "name" : "elasticsearch-eck-elasticsearch-es-worker-0",
->  "cluster_name" : "elasticsearch-eck-elasticsearch",
->  "cluster_uuid" : "wz8ZdQf1RjqHA68Ba8WzLA",
->  "version" : {
->    "number" : "8.11.0",
->    "build_flavor" : "default",
->    "build_type" : "docker",
->    "build_hash" : "d9ec3fa628c7b0ba3d25692e277ba26814820b20",
->    "build_date" : "2023-11-04T10:04:57.184859352Z",
->    "build_snapshot" : false,
->    "lucene_version" : "9.8.0",
->    "minimum_wire_compatibility_version" : "7.17.0",
->    "minimum_index_compatibility_version" : "7.0.0"
->  },
->  "tagline" : "You Know, for Search"
->}
+>{  
+>  "name" : "elasticsearch-eck-elasticsearch-es-worker-0",  
+>  "cluster_name" : "elasticsearch-eck-elasticsearch",  
+>  "cluster_uuid" : "wz8ZdQf1RjqHA68Ba8WzLA",  
+>  "version" : {  
+>    "number" : "8.11.0",  
+>    "build_flavor" : "default",  
+>    "build_type" : "docker",  
+>    "build_hash" : "d9ec3fa628c7b0ba3d25692e277ba26814820b20",  
+>    "build_date" : "2023-11-04T10:04:57.184859352Z",  
+>    "build_snapshot" : false,  
+>    "lucene_version" : "9.8.0",  
+>    "minimum_wire_compatibility_version" : "7.17.0",  
+>    "minimum_index_compatibility_version" : "7.0.0"  
+>  },  
+>  "tagline" : "You Know, for Search"  
+>}  
 
 #### Create index in ElasticSearch
 Within the Repo from step 1 at overlays/Elastic/ElasticSearch/rucio-events contains the index, this needs to be applied to ElasticSearch in the location you want the index to be created 
@@ -76,9 +76,9 @@ You will need at least this in the config section of the daemon values
 
 
 
->  hermes:
->    services_list: "elastic"
->    elastic_endpoint: "http://elasticsearch-eck-elasticsearch-es-worker.elastic-system.svc.cluster.local:9200/<your index>/_bulk"
+>  hermes:  
+>    services_list: "elastic"  
+>    elastic_endpoint: "http://elasticsearch-eck-elasticsearch-es-worker.elastic-system.svc.cluster.local:9200/<your index>/_bulk"  
 
 You will also need to create a secret in the Rucio namespace to allow the injection of the ElasticSearch user secret for Hermes to be able to deposit the messages 
 
@@ -88,33 +88,27 @@ You will also need to create a secret in the Rucio namespace to allow the inject
 
 Add the secret to Hermes, an example is below
 
->hermes:
->  threads: 1
->  podAnnotations: {}
->  bulk: 1000
->  resources:
->    limits:
->      memory: "600Mi"
->      cpu: "210m"
->    requests:
->      memory: "300Mi"
->      cpu: "140m"
->  additionalEnvs:
->  - name: RUCIO_CFG_DATABASE_DEFAULT
->    valueFrom:
->      secretKeyRef:
->        name: rucio-database04
->        key: DEFAULT
->  - name: RUCIO_CFG_HERMES_ELASTIC_USERNAME
->    valueFrom:
->      secretKeyRef:
->        name: elastic-secrets
->        key: USERNAME
->  - name: RUCIO_CFG_HERMES_ELASTIC_PASSWORD
->    valueFrom:
->      secretKeyRef:
->        name: elastic-secrets
->        key: PASSWORD
+>hermes:  
+>  threads: 1  
+>  podAnnotations: {}  
+>  bulk: 1000  
+>  resources:  
+>    limits:  
+>      memory: "600Mi"  
+>      cpu: "210m"  
+>    requests:  
+>      memory: "300Mi"  
+>      cpu: "140m"  
+>  - name: RUCIO_CFG_HERMES_ELASTIC_USERNAME  
+>    valueFrom:  
+>      secretKeyRef:  
+>        name: elastic-secrets  
+>        key: USERNAME  
+>  - name: RUCIO_CFG_HERMES_ELASTIC_PASSWORD  
+>    valueFrom:  
+>      secretKeyRef:   
+>        name: elastic-secrets  
+>        key: PASSWORD  
 
 
 ## 4. Register ElasticSearch as a datasource in Grafana
@@ -131,14 +125,14 @@ In your clusters Grafana deployment go to
 
 - Put in the following details in the fields: 
 
->URL: http://ElasticSearch-eck-ElasticSearch-es-worker.elastic-system.svc.cluster.local:9200
->Basic auth: True
->User: <USERNAME>
->Password: <ElasticSearch password>
->Index name: <your Index>
->Pattern: No pattern
->Time field name: create_at
->Max concurrent Shard Requests: 3 # If you have used the base repo settings
+>URL: http://ElasticSearch-eck-ElasticSearch-es-worker.elastic-system.svc.cluster.local:9200  
+>Basic auth: True  
+>User: <USERNAME>  
+>Password: <ElasticSearch password>  
+>Index name: <your Index>  
+>Pattern: No pattern  
+>Time field name: create_at  
+>Max concurrent Shard Requests: 3 # If you have used the base repo settings  
 
 
 ## 5. Deploy dashboards to Grafana to visualise the data
