@@ -29,16 +29,17 @@ Adding the index to the ElasticSearch can be completed in two ways: using curl, 
 #### Get access to ElasticSearch:
 
 Ensure you have the correct credentials by running the following command in one terminal 
+
 `kubectl get secret elasticsearch-eck-elasticsearch-es-elastic-user kubectl get secret -n elastic-system elasticsearch-eck-elasticsearch-es-elastic-user -o go-template='{{.data.elastic | base64decode}}'`
 
-
+Then portforward to the service to get access to the deployment
 
 `kubectl port-forward -n elastic-system svc/elasticsearch-eck-elasticsearch-es-worker 9200`
+
 In another terminal run, the default username and password is admin:
 
-
-
 `curl -u "<ElasticSearch username>:<ElasticSearch password>" -k "https://localhost:9200"`
+
 Should all be correct you will get a response that shows:
 
 
@@ -84,9 +85,8 @@ You will also need to create a secret in the Rucio namespace to allow the inject
 
 
 `kubectl create secret generic <daemons deploymentname>-elastic-secrets --namespace <Rucio namespace> --from-literal=USERNAME=elastic --from-literal=PASSWORD=<Elasticsearch password>`
+
 Add the secret to Hermes, an example is below
-
-
 
 >hermes:
 >  threads: 1

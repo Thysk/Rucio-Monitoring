@@ -29,18 +29,15 @@ Adding the index to the OpenSearch can be completed in two ways: using curl, and
 
 #### Get access to OpenSearch:
 
-Ensure you have the correct credentials by running the following command in one terminal 
-
-
+Then portforward to the service to get access to the deployment
 
 `kubectl port-forward -n opensearch-system svc/opensearch-cluster-worker 9200`
-In another terminal run, the default username and password is admin:
 
-
+In another terminal run, the default username and password is admin - this of course should be changed:
 
 `curl -u "<opensearch username>:<OpenSearch password>" -k "https://localhost:9200"`
-Should all be correct you will get a response that shows:
 
+Should all be correct you will get a response that shows:
 
 
 >    {
@@ -62,6 +59,7 @@ Should all be correct you will get a response that shows:
 >    }
 
 #### Create index in OpenSearch
+
 Within the Repo from step 1 at overlays/Elastic/OpenSearch/rucio-events contains the index, this needs to be applied to OpenSearch in the location you want the index to be created 
 
 `curl -u "<username>:<password>" -XPUT "https://localhost:9200/<Your chosen index>/?&pretty" -H "Content-Type: application`
@@ -84,9 +82,8 @@ You will also need to create a secret in the Rucio namespace to allow the inject
 
 
 `kubectl create secret generic <daemons deploymentname>-open-secrets --namespace <Rucio namespace> --from-literal=USERNAME=<USERNAME>--from-literal=PASSWORD=<OpenSearch password>`
+
 Add the secret to Hermes, an example is below
-
-
 
 >hermes:
 >  threads: 1
