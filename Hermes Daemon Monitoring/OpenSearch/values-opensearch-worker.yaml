@@ -16,7 +16,7 @@ roles:
 #- master
 - ingest
 - data
-- remote_cluster_client
+# remote_cluster_client
 
 replicas: 3
 
@@ -151,8 +151,8 @@ opensearchJavaOpts: "-Xmx512M -Xms512M"
 
 resources:
   requests:
-    cpu: "1000m"
-    memory: "100Mi"
+    cpu: "100m"
+    memory: "2Gi"
 
 initResources: {}
 #  limits:
@@ -365,7 +365,7 @@ securityConfig:
 # How long to wait for opensearch to stop gracefully
 terminationGracePeriod: 120
 
-sysctlVmMaxMapCount: 262144
+sysctlVmMaxMapCount: 65530
 
 startupProbe:
   tcpSocket:
