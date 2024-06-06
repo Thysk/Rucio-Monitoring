@@ -11,13 +11,30 @@ In brief, the deployment process goes as follows:
 
 ## 1. Use the helm chart to deploy an instance of ElasticSearch
 
-There are a number of different ways to utilise the charts. There is utilise a CI/CD pipeline to read the values or helm files and deploy accordingly, Modify the Makefiles to create the helm files and deploy the charts using helm.
-Whichever you choose, the default settings for ElasticSearch are to have 3 master Nodes and 3 worker nodes.
+There are a number of different ways to utilise the charts. Here I will demonstrate the process of using a make file to take in the values.yaml and produce a helm file with all of the components described and use helm to deploy the components. You can use the helm file to do the same or use a CI/CD pipeline, or whatever method you use.
 
-### A. Using a CI/CD pipeline
+For this system you will need to deploy the custom resource definitions and elastic operator that is found in the [elastic search documentation](https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-deploy-eck.html) 
 
+The default settings for ElasticSearch are to have 3 master Nodes and 3 worker nodes.
 
-### B. Using the Makefiles
+Ensure you have the elasticsearch repo added to your helm repo list
+
+> `helm repo add elastic https://helm.elastic.co`
+> `helm repo update`
+
+Modify the `values-elasticsearch.yaml` to meet your deployment needs, whether this is the certificate useage for the pod, ingress, services, node count and capabilities/roles, setting the vm.max_map_count in one of the various ways (this needs setting to 262144) for the elasticsearch containers to run.
+
+Once you have modified the `values` and you are content to attempt to deploy,
+
+navigate a terminal to the directory with the `Makefile` for ElasticSearch
+
+In the terminal run 
+> `make elastic-deployment`
+to create the file `helm-elasticsearch.yaml` using the values you have in the directory and the templates that are part of the [Cloud-on-k8s](https://github.com/elastic/cloud-on-k8s/tree/main) repository.
+The `makefile` also edits the produced helm file to run on a basic license, this can of course be removed should you be using an enterprise license.
+
+To deploy this helm file you can then run 
+> `helm install elasticsearch elastic/elasticsearch -n <namespace> -f ./values-elasticsearch.yaml`
 
 
 ## 2. Add the index to ElasticSearch to accept the messages from Hermes
@@ -30,15 +47,15 @@ Adding the index to the ElasticSearch can be completed in two ways: using curl, 
 
 Ensure you have the correct credentials by running the following command in one terminal 
 
-`kubectl get secret elasticsearch-eck-elasticsearch-es-elastic-user kubectl get secret -n elastic-system elasticsearch-eck-elasticsearch-es-elastic-user -o go-template='{{.data.elastic | base64decode}}'`
+> `kubectl get secret elasticsearch-eck-elasticsearch-es-elastic-user kubectl get secret -n elastic-system elasticsearch-eck-elasticsearch-es-elastic-user -o go-template='{{.data.elastic | base64decode}}'`
 
 Then portforward to the service to get access to the deployment
 
-`kubectl port-forward -n elastic-system svc/elasticsearch-eck-elasticsearch-es-worker 9200`
+> `kubectl port-forward -n elastic-system svc/elasticsearch-eck-elasticsearch-es-worker 9200`
 
 In another terminal run, the default username and password is admin:
 
-`curl -u "<ElasticSearch username>:<ElasticSearch password>" -k "https://localhost:9200"`
+> `curl -u "<ElasticSearch username>:<ElasticSearch password>" -k "https://localhost:9200"`
 
 Should all be correct you will get a response that shows:
 
@@ -65,7 +82,7 @@ Should all be correct you will get a response that shows:
 #### Create index in ElasticSearch
 Within the Repo from step 1 at overlays/Elastic/ElasticSearch/rucio-events contains the index, this needs to be applied to ElasticSearch in the location you want the index to be created 
 
-`curl -u "elastic:<Elasticsearch password>" -XPUT "https://localhost:9200/<you Index>/?&pretty" -H "Content-Type: application/json" -d @rucio-events -k`
+> `curl -u "elastic:<Elasticsearch password>" -XPUT "https://localhost:9200/<you Index>/?&pretty" -H "Content-Type: application/json" -d @rucio-events -k`
 
 
 ## 3. Configure Hermes to have ElasticSearch as its elastic_endpoint
