@@ -80,7 +80,7 @@ Should all be correct you will get a response that shows:
 >}  
 
 #### Create index in ElasticSearch
-Within the Repo from step 1 at overlays/Elastic/ElasticSearch/rucio-events contains the index, this needs to be applied to ElasticSearch in the location you want the index to be created 
+Within the Repo from step 1 at `overlays/Elastic/rucio-events` contains the index, this needs to be applied to ElasticSearch in the location you want the index to be created 
 
 > `curl -u "elastic:<Elasticsearch password>" -XPUT "https://localhost:9200/<you Index>/?&pretty" -H "Content-Type: application/json" -d @rucio-events -k`
 
@@ -91,8 +91,6 @@ ElasticSearch is now setup to receive messages from Rucio. It now needs to have 
 
 You will need at least this in the config section of the daemon values 
 
-
-
 >  hermes:  
 >    services_list: "elastic"  
 >    elastic_endpoint: "http://elasticsearch-eck-elasticsearch-es-worker.elastic-system.svc.cluster.local:9200/<your index>/_bulk"  
@@ -100,8 +98,7 @@ You will need at least this in the config section of the daemon values
 You will also need to create a secret in the Rucio namespace to allow the injection of the ElasticSearch user secret for Hermes to be able to deposit the messages 
 
 
-
-`kubectl create secret generic <daemons deploymentname>-elastic-secrets --namespace <Rucio namespace> --from-literal=USERNAME=elastic --from-literal=PASSWORD=<Elasticsearch password>`
+`kubectl create secret generic <daemons deploymentname>-search-secrets --namespace <Rucio namespace> --from-literal=USERNAME=<username> --from-literal=PASSWORD=<Elasticsearch password>`
 
 Add the secret to Hermes, an example is below
 
@@ -119,12 +116,12 @@ Add the secret to Hermes, an example is below
 >  - name: RUCIO_CFG_HERMES_ELASTIC_USERNAME  
 >    valueFrom:  
 >      secretKeyRef:  
->        name: elastic-secrets  
+>        name: search-secrets  
 >        key: USERNAME  
 >  - name: RUCIO_CFG_HERMES_ELASTIC_PASSWORD  
 >    valueFrom:  
 >      secretKeyRef:   
->        name: elastic-secrets  
+>        name: search-secrets  
 >        key: PASSWORD  
 
 
@@ -158,4 +155,4 @@ Once the data source is created and verified you can create a dashboard using it
 
 Navigate to Dashboards / Import
 
-Paste in the contents of overlays/Elastic/ElasticSearch/Dashboards/Rucio External into the import via panel json
+Paste in the contents of `overlays/Elastic/Dashboards/Rucio External` into the import via panel json
