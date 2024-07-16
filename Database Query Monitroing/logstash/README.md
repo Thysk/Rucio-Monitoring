@@ -6,6 +6,8 @@ Initial Rucio pipelines were developed by Li Teng and modified by Timothy Noble 
 
 Within this directory are the resources to setup and use a logstash to deploy some database querying pipelines as the inputs and send the information to a XXXXSearch deployment as the output.
 
+The pipelines as laid out within this directory are setup to create a new index daily, and to be amalgamated under an alias for data visualisation purposes. In addition for an alias, it is recommended that a data retention policy is created in the Search software you have chosen to use. For OpenSearch this is the [Index State Management](https://opensearch.org/docs/latest/im-plugin/ism/index/), and for ElasticSearch this is the [Index Lifecyle Management](https://www.elastic.co/guide/en/elasticsearch/reference/8.14/index-lifecycle-management.html).
+
 In brief. the deployment process goes as follows:
 1. Setup helm repos
 2. Edit the helm chart dependant on which Search software you have deployed
