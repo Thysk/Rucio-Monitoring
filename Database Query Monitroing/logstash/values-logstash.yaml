@@ -20,7 +20,7 @@
 version: 8.15.0-SNAPSHOT
 
 # Logstash Docker image to deploy
-# Depending on which XXXXSearch you want to use you should un comment one of the following:
+# Depending on which Search you want to use you should un comment one of the following:
 # For OpenSearch
 # image: opensearchproject/logstash-oss-with-opensearch-output-plugin:8.9.0
 # For ElasticSearch

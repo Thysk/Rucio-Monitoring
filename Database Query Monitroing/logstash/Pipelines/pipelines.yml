@@ -16,7 +16,7 @@
       opensearch {
           hosts => [ "${ES_SECRET_HOST}" ]
           action => "index"
-          index => "rucio_accounts"
+          index => "rucio_accounts-%{yyyy.MM.dd}"
           user => "${ES_SECRET_USER}"
           password => "${ES_SECRET_PASSWORD}"
           ssl => true
@@ -41,7 +41,7 @@
       opensearch {
           hosts => [ "${ES_SECRET_HOST}" ]
           action => "index"
-          index => "rucio_dids"
+          index => "rucio_dids-%{yyyy.MM.dd}"
           user => "${ES_SECRET_USER}"
           password => "${ES_SECRET_PASSWORD}"
           ssl => true
@@ -67,7 +67,7 @@
       opensearch {
         hosts => [ "${ES_SECRET_HOST}" ]
         action => "index"
-        index => "rucio_distances"
+        index => "rucio_distances-%{yyyy.MM.dd}"
         user => "${ES_SECRET_USER}"
         password => "${ES_SECRET_PASSWORD}"
         ssl => true
@@ -93,7 +93,7 @@
       opensearch {
         hosts => [ "${ES_SECRET_HOST}" ]
         action => "index"
-        index => "rucio_replicas"
+        index => "rucio_replicas-%{yyyy.MM.dd}"
         user => "${ES_SECRET_USER}"
         password => "${ES_SECRET_PASSWORD}"
         ssl => true
@@ -118,7 +118,7 @@
       opensearch {
         hosts => [ "${ES_SECRET_HOST}" ]
         action => "index"
-        index => "rucio_rses"
+        index => "rucio_rses-%{yyyy.MM.dd}"
         user => "${ES_SECRET_USER}"
         password => "${ES_SECRET_PASSWORD}"
         ssl => true

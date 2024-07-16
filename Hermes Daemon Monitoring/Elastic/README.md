@@ -28,10 +28,10 @@ Once you have modified the `values` and you are content to attempt to deploy,
 
 navigate a terminal to the directory with the `Makefile` for ElasticSearch
 
-In the terminal run 
+In the terminal run:
 > `make elastic-deployment`
 to create the file `helm-elasticsearch.yaml` using the values you have in the directory and the templates that are part of the [Cloud-on-k8s](https://github.com/elastic/cloud-on-k8s/tree/main) repository.
-The `makefile` also edits the produced helm file to run on a basic license, this can of course be removed should you be using an enterprise license.
+The `Makefile` also edits the produced helm file to run on a basic license, this can of course be removed should you be using an enterprise license.
 
 To deploy this helm file you can then run 
 > `helm install elasticsearch elastic/elasticsearch -n <namespace> -f ./values-elasticsearch.yaml`

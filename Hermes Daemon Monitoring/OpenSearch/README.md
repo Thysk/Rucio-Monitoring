@@ -2,6 +2,8 @@
 
 The OpenSearch requirements and configuration parameters are described in their [github repository](https://github.com/opensearch-project/helm-charts/tree/main/charts/opensearch), but the values files included here with a small amount of edits will deploy a 3 master node, and 3 worker nodes, with persistent storage with the default username and password, and not externally accessible.
 
+The configuration described within this directory provides a basic monitoring setup to be built upon. The Rucio messaging daemon delivers messages to the index, this index will grow over time and can become unmanageable. It would be best to investigate [OpenSearch Index State Management (ISM)](https://opensearch.org/docs/latest/im-plugin/ism/index/) to create a data retention policy for your logs, utilising the rollover action to split the logs into daily indexes, and apply a retention policy.
+
 This Helm chart installs [OpenSearch](https://github.com/opensearch-project/OpenSearch) with configurable TLS, RBAC and much more configurations. This chart caters a number of different use cases and setups.
 
 
