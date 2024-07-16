@@ -45,7 +45,7 @@ Before creating the secrets there is the matter of configuring the logstash pipe
 The default pipelines included utilise the secrets created in `section 2`. The parts that you may wish to change is the pipeline names, the ssl use, or certificate verification. 
 By default the pipelines are named `rucio-<pipeline.id>-<DATE>.
 This setup will create indexes each day and populate them throughout that day (if run more than once).
-While this setup may appear messy at first, it does allow the use of OpenSearch Index State Management to keep data for a certain length of time before deleting it.
+While this setup may appear messy at first, it does allow the use of  State/Lifecycle Management to keep data for a certain length of time before deleting it.
 And with the use of aliases and templates within OpenSearch the dated indexes of each pipeline can be recalled with a single grafana connection for data visualisation.
 
 
